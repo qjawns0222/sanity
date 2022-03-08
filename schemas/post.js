@@ -1,65 +1,90 @@
 export default {
-  name: 'post',
-  title: 'Post',
-  type: 'document',
+  name: "post",
+  title: "Post",
+  type: "document",
   fields: [
     {
-      name: 'title',
-      title: 'Title',
-      type: 'string',
+      name: "title",
+      title: "Title",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
+      name: "slug",
+      title: "Slug",
+      type: "slug",
       options: {
-        source: 'title',
+        source: "title",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: {type: 'author'},
+      name: "subtitle",
+      title: "SUB Title",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'mainImage',
-      title: 'Main image',
-      type: 'image',
+      name: "author",
+      title: "Author",
+      type: "reference",
+      to: { type: "author" },
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "content",
+      title: "Content",
+      type: "blockContent",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "createdAt",
+      title: "Created at",
+      type: "datetime",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "thumbnail",
+      title: "Thumbnail",
+      type: "image",
       options: {
         hotspot: true,
       },
+      fields: [
+        {
+          name: "alt",
+          title: "alt",
+          type: "string",
+          options: {
+            isHighlighted: true,
+          },
+          validation: (Rule) => Rule.required(),
+        },
+      ],
+      validation: (Rule) => Rule.required(),
     },
+
     {
-      name: 'categories',
-      title: 'Categories',
-      type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
-    },
-    {
-      name: 'publishedAt',
-      title: 'Published at',
-      type: 'datetime',
-    },
-    {
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent',
+      name: "tag",
+      title: "tag",
+      type: "reference",
+      to: { type: "tag" },
+      validation: (Rule) => Rule.required(),
     },
   ],
 
   preview: {
     select: {
-      title: 'title',
-      author: 'author.name',
-      media: 'mainImage',
+      title: "title",
+      author: "author.name",
+      media: "thumbnail",
     },
     prepare(selection) {
-      const {author} = selection
+      const { author } = selection;
       return Object.assign({}, selection, {
         subtitle: author && `by ${author}`,
-      })
+      });
     },
   },
-}
+};
